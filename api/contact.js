@@ -46,17 +46,6 @@ export async function POST(request) {
   try {
     const sql = neon(process.env.DATABASE_URL);
     await sql`
-      CREATE TABLE IF NOT EXISTS contact_enquiries (
-        id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        created_at timestamptz NOT NULL DEFAULT now(),
-        name text NOT NULL,
-        email text NOT NULL,
-        project_type text NOT NULL,
-        message text NOT NULL,
-        status text NOT NULL DEFAULT 'new'
-      )
-    `;
-    await sql`
       INSERT INTO contact_enquiries (name, email, project_type, message)
       VALUES (${name}, ${email}, ${projectType}, ${message})
     `;
