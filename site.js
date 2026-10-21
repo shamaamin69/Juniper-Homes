@@ -51,3 +51,6 @@ if(enquiryForm){
 }
 
 document.querySelectorAll('.transformation-toggle').forEach(button=>button.addEventListener('click',()=>{const showBefore=button.getAttribute('aria-pressed')!=='true';button.setAttribute('aria-pressed',String(showBefore));const name=button.closest('article').querySelector('h3').textContent;button.setAttribute('aria-label','Show '+(showBefore?'after':'before')+' photo of '+name.toLowerCase());button.querySelector('.hint-touch').textContent=showBefore?'Tap to see after':'Tap to see before'}));
+
+// Fetch invisible alternate views only when a visitor approaches the interaction.
+document.querySelectorAll('.paired-collection summary').forEach(summary=>{const load=()=>{const img=summary.querySelector('img[data-src]');if(!img)return;img.onload=()=>{img.dataset.loaded='true'};img.srcset=img.dataset.srcset||'';img.src=img.dataset.src;delete img.dataset.src;delete img.dataset.srcset};summary.addEventListener('pointerenter',load,{once:true});summary.addEventListener('focus',load,{once:true});summary.addEventListener('pointerdown',load,{once:true})});
