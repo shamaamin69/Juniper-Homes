@@ -1,4 +1,5 @@
 import { neon } from '@neondatabase/serverless';
+import { sendEnquiryEmail } from '../lib/enquiry-email.js';
 
 const allowedTypes = new Set(['Interiors', 'Furniture', 'Both', 'Other']);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,10 +46,21 @@ export async function POST(request) {
 
   try {
     const sql = neon(process.env.DATABASE_URL);
-    await sql`
+    const [enquiry] = await sql`
       INSERT INTO contact_enquiries (name, email, project_type, message)
       VALUES (${name}, ${email}, ${projectType}, ${message})
+      RETURNING id
     `;
+    try {
+      const emailId = await sendEnquiryEmail({ id: enquiry.id, name, email, projectType, message });
+      console.info('Juniper enquiry notification accepted', { enquiryId: enquiry.id, emailId });
+    } catch (error) {
+      // The enquiry is already saved. Do not invite duplicate submissions if email fails.
+      console.error('Juniper enquiry saved but email notification failed', {
+        enquiryId: enquiry.id,
+        reason: error.message,
+      });
+    }
     return Response.json({ ok: true }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Failed to save Juniper contact enquiry', error);
