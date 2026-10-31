@@ -104,3 +104,6 @@ body{background:var(--paper);color:var(--navy);font-size:var(--body)}h1,h2,h3,h4
 @media(hover:none),(pointer:coarse){.hint-hover{display:none}.hint-touch{display:block}}
 @media(max-width:700px){.project-collection{grid-template-columns:1fr;gap:0}.transformation-images{height:360px}.transformation-case .transformation-images img{height:100%}}
 @media(prefers-reduced-motion:reduce){.transformation-case .transformation-images img{transition:none}}
+
+/* Fixed vector geometry prevents platform emoji arrow substitutions. */
+.arrow-icon{display:inline-block;width:1em;height:1em;flex:none;vertical-align:-.15em;overflow:visible;pointer-events:none}.image-action .arrow-icon{width:18px;height:18px}.quote-controls>a>.arrow-icon{width:24px;height:24px}
