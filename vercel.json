@@ -11,5 +11,23 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/home",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/home",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/home",
+      "destination": "/index.html"
+    }
   ]
 }
